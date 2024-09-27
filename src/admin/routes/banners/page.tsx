@@ -94,7 +94,7 @@ import BannerEditModal from "../../components/banners/route/banner-edit-modal";
 
     useEffect(() => {
         if(banner_settings && banners) {
-            if(banner_settings.max < banners.length) {
+            if(banner_settings.max > banners.length) {
                 setCanAdd(false);
             }
             else {
@@ -132,14 +132,14 @@ import BannerEditModal from "../../components/banners/route/banner-edit-modal";
               </h3>
             </div>
             {
-                canAdd && <Button
+                canAdd ? <Button
                     variant="secondary"
                     className="h-8 self-center"
                     onClick={showCreateModal}
                 >
                     <PlusMini />
                     Новий банер
-                </Button>
+                </Button> : null
             }
           </div>
           <div className="flex flex-col justify-between mt-4 h-full w-full">
