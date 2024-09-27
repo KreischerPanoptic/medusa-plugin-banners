@@ -122,7 +122,6 @@ class BannerService extends TransactionBaseService {
         const query = buildQuery(selector, config)
     
         let results = await bannerRepo.findAndCount(query)
-        console.log(results)
 
         const categoryRepo = this.activeManager_.withRepository(
             this.categoryRepository_

@@ -28,7 +28,7 @@ import { ExtendedBanner } from "../../../../services/banner";
 import CreateUpdateBannerRequest from "../../../../requests/create-update-banner-request";
 import { CreateBannersResponse } from "../../../../api/admin/banners/route";
 import { UpdateBannersResponse } from "../../../../api/admin/banners/[id]/route";
-import { BannerType } from "../../../../models/banner";
+
 // import type { ConfigModule } from "@medusajs/medusa";
 // import { getConfigFile } from "medusa-core-utils";
 
@@ -95,11 +95,32 @@ const getDefaultValues = (
     media: {
       images: [],
     },
-    type: banner?.type === BannerType.LINK ? 'link' : banner?.type === BannerType.NONE ? 'none' :
-    banner?.type === BannerType.CATEGORY ? 'category' : banner?.type === BannerType.PRODUCT ? 'product' :
-    banner?.type === BannerType.PAGE ? 'page' : 'none',
+    type: banner?.type,
   };
 };
+
+// const translateType = (banner: ExtendedBanner): 'product' | 'category' | 'page' | 'link' | 'none' => {
+//   if(!banner) {
+//     return 'none'
+//   }
+//   else if(banner && !banner.type) {
+//     return 'none'
+//   }
+//   else {
+//     switch(banner.type) {
+//       case BannerType.CATEGORY:
+//         return 'category';
+//       case BannerType.PRODUCT:
+//         return 'product';
+//       case BannerType.LINK:
+//         return 'link';
+//       case BannerType.PAGE:
+//         return 'page';
+//       default:
+//         return 'none';
+//     }
+//   }
+// }
 
 const BannerEditModal = ({
   banner,

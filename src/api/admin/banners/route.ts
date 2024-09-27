@@ -30,7 +30,6 @@ export const GET = async (
     )
 
     let results = await bannersService.listAndCount({}, {take: parseInt(`${limit || '10'}`), skip: parseInt(`${offset || '0'}`)});
-    console.log(results)
       res.json({
         count: results[1],
         limit: parseInt(`${limit || '10'}`),
@@ -82,7 +81,6 @@ export const POST = async (
         )
     }
     let bannerObj: Banner = new Banner();
-    console.log('banner body: ', req.body)
     switch (req.body.type) {
       case 'category':
         if(!req.body.categoryId) {
