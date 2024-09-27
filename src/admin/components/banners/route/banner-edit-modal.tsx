@@ -197,6 +197,10 @@ const BannerEditModal = ({
     };
     // add new one category
     if (createNew) {
+      console.log('thumbnail upload: ', uploadedImages[0]?.url ||
+      data.media.images[0]?.url ||
+      data.thumbnail ||
+      "");
       const payloadNew: CreateUpdateBannerRequest = {
         type: data.type,
         categoryId: data.categoryId && data.categoryId.length > 0 ? data.categoryId : null,

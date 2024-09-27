@@ -1,6 +1,6 @@
 {
   "name": "medusa-plugin-banners",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Banners with image and convenient relations to other MedusaJS entities and REST API Endpoints module for MedusaJS Admin-UI",
   "author": "Dennis Soroka",
   "license": "MIT",
