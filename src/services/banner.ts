@@ -24,8 +24,6 @@ import BannerSettingsRepository from "../repositories/banner_settings";
 // } & MedusaUpdateProductCategoryInput;
 
 export class ExtendedBanner extends Banner {
-    imageUrl?: string | undefined;
-    image: Image | {}
     product: Product | {}
     category: ProductCategory | {}
 }

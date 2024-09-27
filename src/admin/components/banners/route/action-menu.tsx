@@ -1,21 +1,16 @@
 import {
   EllipsisHorizontal,
-  Bolt,
-  XCircle,
   PencilSquare,
   Trash,
 } from "@medusajs/icons";
 import {
-  useAdminDeleteProductCategory,
-  useAdminUpdateProductCategory,
-  adminProductCategoryKeys,
+  useAdminCustomDelete
 } from "medusa-react";
 import { DropdownMenu, IconButton, usePrompt } from "@medusajs/ui";
 import { Notify } from "../../../types/notify";
-import PublishIcon from "../../shared/icons/publish-icon";
-import UnpublishIcon from "../../shared/icons/unpublish-icon";
 import { useQueryClient } from "@tanstack/react-query";
 import { ExtendedBanner } from "../../../../services/banner";
+import { UpdateBannersResponse } from "../../../../api/admin/banners/[id]/route";
 
 export function BannerActions({
   banner,
@@ -42,46 +37,33 @@ export function BannerActions({
   //   },
   // });
 
-  // const updateCategory = useAdminUpdateProductCategory(category.id);
+  const { mutate: mutateDelete, isLoading: isLoadingDeletion } = useAdminCustomDelete<UpdateBannersResponse>(
+    `/banners/${banner?.id}`,
+    ["banners"], {}, {
+      onSuccess: async () => {
+        notify.success("Успіх", "Банер видалено успішно");
+        await queryClient.invalidateQueries(["banners"]);
+      },
+      onError: (error) => {
+        notify.error(
+          "Помилка",
+          `Під час видалення банера виникла помилка: "${error.message}"`
+        );
+      },
+    }
+  );
 
-  // const handleUpdateStatus = (changeTarget: "is_active" | "is_internal") => {
-  //   updateCategory.mutate(
-  //     {
-  //       is_active:
-  //         changeTarget === "is_active"
-  //           ? !category.is_active
-  //           : (category.is_active as boolean),
-  //       is_internal:
-  //         changeTarget === "is_internal"
-  //           ? !category.is_internal
-  //           : (category.is_internal as boolean),
-  //     },
-  //     {
-  //       onSuccess: () => {
-  //         notify.success("Успіх", "Статус категорії змінено успішно");
-  //       },
-  //       onError: (error) => {
-  //         notify.error(
-  //           "Помилка",
-  //           `Під час змінення статусу категорії виникла помилка: "${error.message}"`
-  //         );
-  //       },
-  //     }
-  //   );
-  // };
+  const onDelete = async () => {
+    const confirmed = await prompt({
+      title: `Видалення банеру - ${banner.id}`,
+      description: "Ви впевнені що хочете видалити цей банер?",
+      confirmText: "Видалити",
+    });
 
-
-  // const onDelete = async () => {
-  //   const confirmed = await prompt({
-  //     title: `Видалення категорії - ${category.name}`,
-  //     description: "Ви впевнені що хочете видалити цю категорію?",
-  //     confirmText: "Видалити",
-  //   });
-
-  //   if (confirmed) {
-  //     mutate();
-  //   }
-  // };
+    if (confirmed) {
+      mutateDelete();
+    }
+  };
 
   return (
     <DropdownMenu>
@@ -101,7 +83,7 @@ export function BannerActions({
           Очистити перегляди
         </DropdownMenu.Item> */}
         <DropdownMenu.Item className="gap-x-2"
-        //onClick={onDelete}
+          onClick={onDelete}
         >
           <Trash className="text-ui-fg-subtle" />
           Видалити

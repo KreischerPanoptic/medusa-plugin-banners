@@ -145,6 +145,54 @@ const BannerEditModal = ({
   const queryClient = useQueryClient();
   // const { client } = useMedusa();
   const uploadFile = useAdminUploadFile();
+
+  const {product_categories} = useAdminProductCategories({offset: 0, limit: 0});
+  const [categories, setCategories] = useState<{
+    label: string;
+    value: string;
+  }[]|undefined>();
+
+  useEffect(() => {
+    if(product_categories) {
+      let tmpCategories: {
+        label: string;
+        value: string;
+      }[] = [];
+
+      for(let category of product_categories) {
+        tmpCategories.push({
+          label: category.name,
+          value: category.id
+        })
+      }
+      setCategories(tmpCategories);
+    }
+  }, [product_categories])
+
+  const {products: medusaProducts} = useAdminProducts({offset: 0, limit: 0});
+
+  const [products, setProducts] = useState<{
+    label: string;
+    value: string;
+  }[]|undefined>();
+
+  useEffect(() => {
+    if(medusaProducts) {
+      let tmpProduct: {
+        label: string;
+        value: string;
+      }[] = [];
+
+      for(let product of medusaProducts) {
+        tmpProduct.push({
+          label: product.title,
+          value: product.id
+        })
+      }
+      setProducts(tmpProduct);
+    }
+  }, [medusaProducts])
+
   const { mutateAsync: mutateCreateAsync, isLoading: isLoadingCreation } = useAdminCustomPost
   <CreateUpdateBannerRequest, CreateBannersResponse>(
     "/banners",
@@ -202,12 +250,6 @@ const BannerEditModal = ({
     const { uploads: uploadedImages } = await uploadFile.mutateAsync(
       nativeFiles
     );
-
-    // const metadataWithThumbnail = {
-    //   ...getSubmittableMetadata(data.metadata),
-    //   thumbnailImageUrl: uploadedImages[0]?.url || data.thumbnail || "",
-    //   visitsCount: parseInt(`${data.visits}`) || 0
-    // };
 
     const payload: CreateUpdateBannerRequest = {
       type: data.type,
@@ -354,76 +396,69 @@ const BannerEditModal = ({
                   </div>
                 :
                 form.watch("type") === 'category' ?
-                  //TODO: add categories select
-                  null
+                <div className="flex flex-row flex-wrap gap-x-4">
+                <div className="flex flex-col flex-1 gap-y-2">
+                  <Label htmlFor="is_internal" className="text-ui-fg-subtle">
+                    {"Зв`язана категорія"}
+                  </Label>
+                  <Controller
+                    name="categoryId"
+                    control={form.control}
+                    rules={{ required: true }}
+                    render={({ field: { onChange, ...other } }) => (
+                      <Select {...other} onValueChange={onChange}>
+                        <Select.Trigger>
+                          <Select.Value placeholder="Оберіть зв`язану категорію для банера" />
+                        </Select.Trigger>
+                        <Select.Content>
+                          {
+                            categories && categories.length > 0 ? 
+                            categories.map((item) => (
+                              <Select.Item key={item.label} value={item.value}>
+                                {item.label}
+                              </Select.Item>
+                            )) : null
+                          }
+                        </Select.Content>
+                      </Select>
+                    )}
+                  />
+                </div>
+              </div>
                 :
                 form.watch("type") === 'product' ?
-                  //TODO: add product select
-                  null
+                <div className="flex flex-row flex-wrap gap-x-4">
+                <div className="flex flex-col flex-1 gap-y-2">
+                  <Label htmlFor="is_internal" className="text-ui-fg-subtle">
+                    {"Зв`язаний продукт"}
+                  </Label>
+                  <Controller
+                    name="productId"
+                    control={form.control}
+                    rules={{ required: true }}
+                    render={({ field: { onChange, ...other } }) => (
+                      <Select {...other} onValueChange={onChange}>
+                        <Select.Trigger>
+                          <Select.Value placeholder="Оберіть зв`язаний продукт для банера" />
+                        </Select.Trigger>
+                        <Select.Content>
+                          {
+                            products && products.length > 0 ? 
+                            products.map((item) => (
+                              <Select.Item key={item.label} value={item.value}>
+                                {item.label}
+                              </Select.Item>
+                            )) : null
+                          }
+                        </Select.Content>
+                      </Select>
+                    )}
+                  />
+                </div>
+              </div>
                 :
                 null
               }
-              {/* <div className="flex flex-col gap-y-2">
-                <Label htmlFor="name" className="text-ui-fg-subtle">
-                  Назва
-                </Label>
-                <Input
-                  id="name"
-                  placeholder="Солодощі"
-                  {...form.register("name")}
-                />
-              </div>
-              <div className="flex flex-col gap-y-2">
-                <Label htmlFor="handle" className="text-ui-fg-subtle">
-                  Посилання
-                  <span className="italic">{` (.../category/${handlePreview})`}</span>
-                </Label>
-                <Input
-                  id="handle"
-                  onChangeCapture={(event) =>
-                    handlerSanitize(event.currentTarget.value)
-                  }
-                  onFocus={(event) => {
-                    if (event.currentTarget.value === "") {
-                      event.currentTarget.value = handlerSanitizeReturn(form.getValues().name);
-                      handlerSanitize(form.getValues().name);
-                    }
-                  }}
-                  placeholder="solodoshi"
-                  {...form.register("handle")}
-                />
-              </div>
-              <div className="flex flex-col gap-y-2">
-                <Label htmlFor="description" className="text-ui-fg-subtle">
-                  Опис
-                </Label>
-                <Input
-                  id="description"
-                  type="textarea"
-                  placeholder="Корисні та смачні солодощі"
-                  {...form.register("description")}
-                />
-              </div>
-              <div className="flex flex-col gap-y-2">
-                <Label htmlFor="visits" className="text-ui-fg-subtle">
-                  Перегляди
-                </Label>
-                <Input
-                  id="visits"
-                  type="number"
-                  placeholder="0"
-                  {...form.register("visits")}
-                />
-              </div>
-              <div className="flex flex-col gap-y-2">
-                <Label htmlFor="metadata" className="text-ui-fg-subtle">
-                  Метадані
-                </Label>
-                <MetadataForm
-                  form={nestedForm(form, "metadata")}
-                  hiddenKeys={["thumbnailImageUrl", "visitsCount"]}
-                />
-              </div> */}
             </div>
           </Drawer.Body>
           <Drawer.Footer>

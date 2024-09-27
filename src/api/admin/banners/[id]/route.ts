@@ -142,7 +142,7 @@ export const POST = async (
 
 export const DELETE = async (
     req: MedusaRequest,
-    res: MedusaResponse
+    res: MedusaResponse<UpdateBannersResponse>
 ) => {
     const {id} = req.params;
     const bannersService: BannerService = req.scope.resolve(

@@ -86,13 +86,13 @@ function BannerListItemDetails({
                 onClick={() => editBanner(item)}
               >
                 <div className="flex items-center gap-x-2">
-                  {!item.imageUrl && (
+                  {!item.thumbnail && (
                     <div className="flex w-14 h-10 items-center justify-center bg-ui-bg-component rounded-rounded border-[1px]"></div>
                   )}
-                  {item.imageUrl && (
+                  {item.thumbnail && (
                     <div className="flex w-14 h-12 items-center justify-center">
                       <img
-                        src={item.imageUrl}
+                        src={item.thumbnail}
                         alt={`Зображення ${item.id}`}
                         className="rounded-rounded max-w-14 max-h-12"
                       />
