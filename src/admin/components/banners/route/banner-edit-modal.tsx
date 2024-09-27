@@ -128,7 +128,7 @@ const BannerEditModal = ({
   )
   const { mutateAsync: mutateUpdateAsync, isLoading: isLoadingUpdate } = useAdminCustomPost
     <CreateUpdateBannerRequest, UpdateBannersResponse>(
-      `/banners/${banner.id}`,
+      `/banners/${banner?.id}`,
       ["banners"]
     )
   // const { mutateAsync, isLoading } = useAdminUpdateProductCategory(
