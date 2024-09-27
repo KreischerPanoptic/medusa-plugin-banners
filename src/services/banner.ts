@@ -67,44 +67,45 @@ class BannerService extends TransactionBaseService {
         let banners = await bannerRepo.find();
 
         let bannersResult: ExtendedBanner[] = [];
-        for(let banner of banners) {
-            let tmpBanner: ExtendedBanner = new ExtendedBanner();
-            tmpBanner.categoryId = banner.categoryId;
-            tmpBanner.created_at = banner.created_at;
-            tmpBanner.deleted_at = banner.deleted_at;
-            tmpBanner.id = banner.id;
-            tmpBanner.imageId = banner.imageId;
-            tmpBanner.link = banner.link;
-            tmpBanner.productId = banner.productId;
-            tmpBanner.rank = banner.rank;
-            tmpBanner.type = banner.type;
-            tmpBanner.updated_at = banner.updated_at;
-            if(banner.type === BannerType.CATEGORY) {
-                const query = buildQuery({
-                    id: banner.categoryId,
-                  })
-                  let category = await categoryRepo.findOne(query);
-                tmpBanner.category = category ? category : {}
-            }
-            else if(banner.type == BannerType.PRODUCT) {
-                const query = buildQuery({
-                    id: banner.productId,
-                  })
-                  let product = await productRepo.findOne(query);
-                tmpBanner.product = product ? product : {}
-            }
+        if(banners && banners.length > 0) {
+          for(let banner of banners) {
+              let tmpBanner: ExtendedBanner = new ExtendedBanner();
+              tmpBanner.categoryId = banner.categoryId;
+              tmpBanner.created_at = banner.created_at;
+              tmpBanner.deleted_at = banner.deleted_at;
+              tmpBanner.id = banner.id;
+              tmpBanner.imageId = banner.imageId;
+              tmpBanner.link = banner.link;
+              tmpBanner.productId = banner.productId;
+              tmpBanner.rank = banner.rank;
+              tmpBanner.type = banner.type;
+              tmpBanner.updated_at = banner.updated_at;
+              if(banner.type === BannerType.CATEGORY) {
+                  const query = buildQuery({
+                      id: banner.categoryId,
+                    })
+                    let category = await categoryRepo.findOne(query);
+                  tmpBanner.category = category ? category : {}
+              }
+              else if(banner.type == BannerType.PRODUCT) {
+                  const query = buildQuery({
+                      id: banner.productId,
+                    })
+                    let product = await productRepo.findOne(query);
+                  tmpBanner.product = product ? product : {}
+              }
 
-            if(banner.imageId) {
-                const query = buildQuery({
-                    id: banner.imageId,
-                  })
-                  let image = await imageRepo.findOne(query);
-                tmpBanner.image = image ? image : {}
-                tmpBanner.imageUrl = image ? image.url : undefined;
-            }
-            bannersResult.push(tmpBanner)
+              if(banner.imageId) {
+                  const query = buildQuery({
+                      id: banner.imageId,
+                    })
+                    let image = await imageRepo.findOne(query);
+                  tmpBanner.image = image ? image : {}
+                  tmpBanner.imageUrl = image ? image.url : undefined;
+              }
+              bannersResult.push(tmpBanner)
+          }
         }
-
         return bannersResult
     }
 
@@ -141,44 +142,45 @@ class BannerService extends TransactionBaseService {
           )
 
         let bannersResult: ExtendedBanner[] = [];
-        for(let banner of results[0]) {
-            let tmpBanner: ExtendedBanner = new ExtendedBanner();
-            tmpBanner.categoryId = banner.categoryId;
-            tmpBanner.created_at = banner.created_at;
-            tmpBanner.deleted_at = banner.deleted_at;
-            tmpBanner.id = banner.id;
-            tmpBanner.imageId = banner.imageId;
-            tmpBanner.link = banner.link;
-            tmpBanner.productId = banner.productId;
-            tmpBanner.rank = banner.rank;
-            tmpBanner.type = banner.type;
-            tmpBanner.updated_at = banner.updated_at;
-            if(banner.type === BannerType.CATEGORY) {
-                const query = buildQuery({
-                    id: banner.categoryId,
-                  })
-                  let category = await categoryRepo.findOne(query);
-                tmpBanner.category = category ? category : {}
-            }
-            else if(banner.type == BannerType.PRODUCT) {
-                const query = buildQuery({
-                    id: banner.productId,
-                  })
-                  let product = await productRepo.findOne(query);
-                tmpBanner.product = product ? product : {}
-            }
+        if(results[1] > 0) {
+          for(let banner of results[0]) {
+              let tmpBanner: ExtendedBanner = new ExtendedBanner();
+              tmpBanner.categoryId = banner.categoryId;
+              tmpBanner.created_at = banner.created_at;
+              tmpBanner.deleted_at = banner.deleted_at;
+              tmpBanner.id = banner.id;
+              tmpBanner.imageId = banner.imageId;
+              tmpBanner.link = banner.link;
+              tmpBanner.productId = banner.productId;
+              tmpBanner.rank = banner.rank;
+              tmpBanner.type = banner.type;
+              tmpBanner.updated_at = banner.updated_at;
+              if(banner.type === BannerType.CATEGORY) {
+                  const query = buildQuery({
+                      id: banner.categoryId,
+                    })
+                    let category = await categoryRepo.findOne(query);
+                  tmpBanner.category = category ? category : {}
+              }
+              else if(banner.type == BannerType.PRODUCT) {
+                  const query = buildQuery({
+                      id: banner.productId,
+                    })
+                    let product = await productRepo.findOne(query);
+                  tmpBanner.product = product ? product : {}
+              }
 
-            if(banner.imageId) {
-                const query = buildQuery({
-                    id: banner.imageId,
-                  })
-                  let image = await imageRepo.findOne(query);
-                tmpBanner.image = image ? image : {}
-                tmpBanner.imageUrl = image ? image.url : undefined;
-            }
-            bannersResult.push(tmpBanner)
+              if(banner.imageId) {
+                  const query = buildQuery({
+                      id: banner.imageId,
+                    })
+                    let image = await imageRepo.findOne(query);
+                  tmpBanner.image = image ? image : {}
+                  tmpBanner.imageUrl = image ? image.url : undefined;
+              }
+              bannersResult.push(tmpBanner)
+          }
         }
-
         return [bannersResult,results[1]]
       }
 
