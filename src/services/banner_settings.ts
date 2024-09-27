@@ -37,14 +37,30 @@ class BannerSettingsService extends TransactionBaseService {
         const result = await bannerRepo.find()
         const banner = result[0]
     
-        if (!banner) {
-          throw new MedusaError(
-            MedusaError.Types.NOT_FOUND,
-            "Banner settings was not found"
-          )
-        }
-    
         return banner
+      }
+
+      async seed(): Promise<BannerSettings> {
+        return this.atomicPhase_(async (manager) => {
+          const bannerRepo = this.activeManager_.withRepository(
+            this.bannerSettingsRepository_
+          )
+        const result = await bannerRepo.find()
+        let banner = result[0]
+          if(banner) {
+            throw new MedusaError(
+              MedusaError.Types.NOT_ALLOWED,
+              "Banner settings already exist!"
+            )
+          }
+        //return banner
+
+          banner = bannerRepo.create()
+          banner.max = 5;
+
+          const createResult = await bannerRepo.save(banner)
+            return createResult
+        })
       }
 
       async update(

@@ -14,6 +14,9 @@ import BannerSettingsService from "../services/banner_settings"
       "bannerService"
     )
     let currentSettings = await bannerService.retrieve()
+    if(!currentSettings) {
+      currentSettings = await bannerService.seed();
+    }
     console.info(`Max banners count in settings: ${
       currentSettings.max
     }`)
