@@ -75,7 +75,7 @@ import { ExtendedBannersResponse } from "../../../api/admin/banners/route";
       }
     }, [data])
   
-    const showPlaceholder = !isLoading && !banners.length;
+    const showPlaceholder = !isLoading && !banners;
   
     if (isError || !banners) {
       return <BannersErrorState />;
