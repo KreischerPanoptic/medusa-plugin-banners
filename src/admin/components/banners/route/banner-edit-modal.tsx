@@ -28,6 +28,7 @@ import { ExtendedBanner } from "../../../../services/banner";
 import CreateUpdateBannerRequest from "../../../../requests/create-update-banner-request";
 import { CreateBannersResponse } from "../../../../api/admin/banners/route";
 import { UpdateBannersResponse } from "../../../../api/admin/banners/[id]/route";
+import { BannerType } from "../../../../models/banner";
 // import type { ConfigModule } from "@medusajs/medusa";
 // import { getConfigFile } from "medusa-core-utils";
 
@@ -87,14 +88,16 @@ const getDefaultValues = (
   }
 
   return {
-    link: banner.link,
-    categoryId: banner.categoryId,
-    productId: banner.productId,
-    thumbnail: banner.thumbnail,
+    link: banner?.link,
+    categoryId: banner?.categoryId,
+    productId: banner?.productId,
+    thumbnail: banner?.thumbnail,
     media: {
       images: [],
     },
-    type: banner.type,
+    type: banner?.type === BannerType.LINK ? 'link' : banner?.type === BannerType.NONE ? 'none' :
+    banner?.type === BannerType.CATEGORY ? 'category' : banner?.type === BannerType.PRODUCT ? 'product' :
+    banner?.type === BannerType.PAGE ? 'page' : 'none',
   };
 };
 
