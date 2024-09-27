@@ -14,6 +14,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import BannerSettingsEditForm from "../../components/banners/settings/banner-settings-edit-form";
 import { BannersSettingsResponse } from "../../../api/admin/banners-settings/route";
 import { BannerSettings } from "../../../models/banner_settings";
+import { useEffect, useState } from "react";
 
 function BannersSettingsEmptyState() {
   return (
@@ -52,11 +53,18 @@ const BannersSettingPage = ({
       {}
     )
 
+    const [banner_settings, setBannerSettings] = useState<BannerSettings|undefined|null>()
+    useEffect(() => {
+      if(data && data.banners_settings) {
+        setBannerSettings(data.banners_settings);
+      }
+    }, [data])
+
     const submitUpdate = async () => {
       await queryClient.invalidateQueries(['banners-settings']);
     };
 
-    const showPlaceholder = !isLoading && !data.banners_settings;
+    const showPlaceholder = !isLoading && !banner_settings;
 
     if (isError || !data.banners_settings) {
       return <BannersSettingsErrorState />;
@@ -85,7 +93,8 @@ const BannersSettingPage = ({
           ) : (
             <BannerSettingsEditForm
             notify={notify}
-            settings={data?.banners_settings!}
+            onUpdate={submitUpdate}
+            settings={banner_settings}
             />
           )}
         </div>
