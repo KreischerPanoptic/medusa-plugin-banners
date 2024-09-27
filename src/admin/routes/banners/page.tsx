@@ -95,7 +95,7 @@ import BannerEditModal from "../../components/banners/route/banner-edit-modal";
     useEffect(() => {
         if(banner_settings && banners) {
             if(banner_settings.max > banners.length) {
-                setCanAdd(false);
+                setCanAdd(true);
             }
             else {
                 setCanAdd(false);
