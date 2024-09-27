@@ -44,7 +44,7 @@ class BannerService extends TransactionBaseService {
 
         this.imageRepository_ = container.imageRepository;
         this.productRepository_ = container.productRepository;
-        this.categoryRepository_ = container.categoryRepository;
+        this.categoryRepository_ = container.productCategoryRepository;
         this.bannerRepository_ = container.bannerRepository;
         this.bannerSettingsRepository_ = container.bannerSettingsRepository;
         this.logger_ = container.logger;

@@ -9,9 +9,9 @@ import BannerSettingsService from "../services/banner_settings"
     container: MedusaContainer,
     config: ConfigModule
   ): Promise<void> => {
-    console.info("Starting loader...")
+    console.info("Starting banners settings loader...")
     const bannerService = container.resolve<BannerSettingsService>(
-      "bannerService"
+      "bannerSettingsService"
     )
     let currentSettings = await bannerService.retrieve()
     if(!currentSettings) {
@@ -20,5 +20,5 @@ import BannerSettingsService from "../services/banner_settings"
     console.info(`Max banners count in settings: ${
       currentSettings.max
     }`)
-    console.info("Ending loader...")
+    console.info("Ending banners settings loader...")
   }
