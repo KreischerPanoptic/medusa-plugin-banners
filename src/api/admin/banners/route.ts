@@ -16,6 +16,10 @@ export class ExtendedBannersResponse extends FindPaginationParams {
     banners: ExtendedBanner[]
 }
 
+export class CreateBannersResponse {
+    banner: Banner
+}
+
 export const GET = async (
     req: MedusaRequest<FindPaginationParams>,
     res: MedusaResponse<ExtendedBannersResponse>
@@ -46,7 +50,7 @@ const isValidUrl = urlString=> {
 
 export const POST = async (
     req: MedusaRequest<CreateUpdateBannerRequest>,
-    res: MedusaResponse
+    res: MedusaResponse<CreateBannersResponse>
   ) => {
     const bannersService: BannerService = req.scope.resolve(
         "bannerService"
@@ -146,7 +150,7 @@ export const POST = async (
         break;
     }
   
-    bannerObj.imageId = req.body.imageId;
+    bannerObj.thumbnail = req.body.thumbnail;
     bannerObj.rank = bannersCount;
   
     let created = await bannersService.create(bannerObj)

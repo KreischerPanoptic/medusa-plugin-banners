@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { ProductCategory } from "@medusajs/medusa";
 import { Tag, PlusMini } from "@medusajs/icons";
 import {
   StatusBadge,
@@ -10,6 +9,7 @@ import {
 } from "@medusajs/ui";
 import { BannerActions } from "./action-menu";
 // import CategoryEditModal from "./category-edit-modal";
+import BannerEditModal from "./banner-edit-modal";
 import { Notify } from "../../../types/notify";
 import { ExtendedBanner } from "../../../../services/banner";
 
@@ -59,16 +59,16 @@ function BannerListItemDetails({
 
   return (
     <>
-      {/* <CategoryEditModal
+      <BannerEditModal
         isOpen={
           !!activeBanner && (isEditModalVisible || isCreateModalVisible)
         }
         onClose={closeEditModal}
-        category={activeBanner}
-        categories={banners}
+        banner={activeBanner}
+        banners={banners}
         createNew={isCreateModalVisible}
         notify={notify}
-      /> */}
+      />
       <div className="bg-ui-bg-component hover:bg-ui-bg-component-hover rounded-rounded">
         <div
           // style={{ marginLeft: depth * -8 }}

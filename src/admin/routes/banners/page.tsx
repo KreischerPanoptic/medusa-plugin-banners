@@ -13,12 +13,14 @@ import {
     ExclamationCircle,
     PlusMini,
   } from "@medusajs/icons";
-//   import CategoryEditModal from "../../components/categories/category-edit-modal";
   import { useQueryClient } from "@tanstack/react-query";
 import BannersList from "../../components/banners/route/banners-list";
 import { ExtendedBanner } from "../../../services/banner";
 import { useEffect, useState } from "react";
 import { ExtendedBannersResponse } from "../../../api/admin/banners/route";
+import { BannersSettingsResponse } from "../../../api/admin/banners-settings/route";
+import { BannerSettings } from "../../../models/banner_settings";
+import BannerEditModal from "../../components/banners/route/banner-edit-modal";
 
   function BannersEmptyState() {
     return (
@@ -74,8 +76,34 @@ import { ExtendedBannersResponse } from "../../../api/admin/banners/route";
         setBanners(data.banners);
       }
     }, [data])
+
+    const { data: settingsData, isLoading: isSettingLoading, isError: isSettingsError } = useAdminCustomQuery
+    <any, BannersSettingsResponse>(
+      "/banners-settings",
+      ["banners-settings"],
+      {}
+    )
+
+    const [canAdd,setCanAdd] = useState<boolean>(true)
+    const [banner_settings, setBannerSettings] = useState<BannerSettings|undefined|null>()
+    useEffect(() => {
+      if(settingsData && settingsData.banners_settings) {
+        setBannerSettings(settingsData.banners_settings);
+      }
+    }, [settingsData])
+
+    useEffect(() => {
+        if(banner_settings && banners) {
+            if(banner_settings.max < banners.length) {
+                setCanAdd(false);
+            }
+            else {
+                setCanAdd(false);
+            }
+        }
+    }, [banner_settings, banners])
   
-    const showPlaceholder = !isLoading && !banners;
+    const showPlaceholder = !isLoading && (banners && !banners.length);
   
     if (isError || !banners) {
       return <BannersErrorState />;
@@ -83,16 +111,16 @@ import { ExtendedBannersResponse } from "../../../api/admin/banners/route";
   
     return (
       <>
-        {/* {isCreateModalVisible && (
-          <CategoryEditModal
+        {isCreateModalVisible && (
+          <BannerEditModal
             isOpen={isCreateModalVisible}
             onClose={closeEditModal}
-            category={null}
-            categories={null}
+            banner={null}
+            banners={null}
             createNew={isCreateModalVisible}
             notify={notify}
           />
-        )} */}
+        )}
         <Container className="flex flex-col min-h-[640px] grow h-full w-full">
           <div className="flex justify-between align-top border-grey-20 border-b pb-4">
             <div>
@@ -103,14 +131,16 @@ import { ExtendedBannersResponse } from "../../../api/admin/banners/route";
                 Тут ви можете керувати банерами та створювати нові рекламні матеріали
               </h3>
             </div>
-            <Button
-              variant="secondary"
-              className="h-8 self-center"
-              onClick={showCreateModal}
-            >
-              <PlusMini />
-              Новий банер
-            </Button>
+            {
+                canAdd && <Button
+                    variant="secondary"
+                    className="h-8 self-center"
+                    onClick={showCreateModal}
+                >
+                    <PlusMini />
+                    Новий банер
+                </Button>
+            }
           </div>
           <div className="flex flex-col justify-between mt-4 h-full w-full">
             {showPlaceholder ? (

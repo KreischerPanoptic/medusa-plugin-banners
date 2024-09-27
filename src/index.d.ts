@@ -6,7 +6,7 @@ export declare module '@medusajs/medusa/dist/models/banner' {
       type: string;
       productId?: string;
       link?: string;
-      imageId?: string;
+      thumbnail?: string;
       categoryId?: string;
     }
 }

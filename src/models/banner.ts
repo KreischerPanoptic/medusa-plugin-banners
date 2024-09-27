@@ -36,7 +36,7 @@ export class Banner extends SoftDeletableEntity {
     link: string | null;
 
     @Column({type: 'text', nullable: true})
-    imageId?: string | null;
+    thumbnail?: string | null;
 
     @BeforeInsert()
     private beforeInsert(): void {

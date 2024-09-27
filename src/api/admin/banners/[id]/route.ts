@@ -7,8 +7,12 @@ import type {
 import { MedusaError } from "@medusajs/utils"
 import BannerService from "../../../../services/banner";
 import CreateUpdateBannerRequest from "../../../../requests/create-update-banner-request";
-import { BannerType } from "../../../../models/banner";
+import { Banner, BannerType } from "../../../../models/banner";
   
+export class UpdateBannersResponse {
+  banner: Banner
+}
+
 export const GET = async (
     req: MedusaRequest,
     res: MedusaResponse
@@ -40,7 +44,7 @@ return !!urlPattern.test(urlString);
 
 export const POST = async (
   req: MedusaRequest<CreateUpdateBannerRequest>,
-  res: MedusaResponse
+  res: MedusaResponse<UpdateBannersResponse>
 ) => {
   const {id} = req.params;
 
@@ -130,7 +134,7 @@ export const POST = async (
       break;
   }
 
-  bannerResponse.imageId = req.body.imageId;
+  bannerResponse.thumbnail = req.body.thumbnail;
 
   let updated = await bannersService.update(id, bannerResponse)
    res.json({ banner: updated })

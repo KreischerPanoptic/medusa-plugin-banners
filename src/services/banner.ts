@@ -74,7 +74,7 @@ class BannerService extends TransactionBaseService {
               tmpBanner.created_at = banner.created_at;
               tmpBanner.deleted_at = banner.deleted_at;
               tmpBanner.id = banner.id;
-              tmpBanner.imageId = banner.imageId;
+              tmpBanner.thumbnail = banner.thumbnail;
               tmpBanner.link = banner.link;
               tmpBanner.productId = banner.productId;
               tmpBanner.rank = banner.rank;
@@ -94,15 +94,7 @@ class BannerService extends TransactionBaseService {
                     let product = await productRepo.findOne(query);
                   tmpBanner.product = product ? product : {}
               }
-
-              if(banner.imageId) {
-                  const query = buildQuery({
-                      id: banner.imageId,
-                    })
-                    let image = await imageRepo.findOne(query);
-                  tmpBanner.image = image ? image : {}
-                  tmpBanner.imageUrl = image ? image.url : undefined;
-              }
+              tmpBanner.thumbnail = banner.thumbnail
               bannersResult.push(tmpBanner)
           }
         }
@@ -149,7 +141,7 @@ class BannerService extends TransactionBaseService {
               tmpBanner.created_at = banner.created_at;
               tmpBanner.deleted_at = banner.deleted_at;
               tmpBanner.id = banner.id;
-              tmpBanner.imageId = banner.imageId;
+              tmpBanner.thumbnail = banner.thumbnail;
               tmpBanner.link = banner.link;
               tmpBanner.productId = banner.productId;
               tmpBanner.rank = banner.rank;
@@ -169,15 +161,7 @@ class BannerService extends TransactionBaseService {
                     let product = await productRepo.findOne(query);
                   tmpBanner.product = product ? product : {}
               }
-
-              if(banner.imageId) {
-                  const query = buildQuery({
-                      id: banner.imageId,
-                    })
-                    let image = await imageRepo.findOne(query);
-                  tmpBanner.image = image ? image : {}
-                  tmpBanner.imageUrl = image ? image.url : undefined;
-              }
+              tmpBanner.thumbnail = banner.thumbnail;
               bannersResult.push(tmpBanner)
           }
         }
@@ -220,7 +204,7 @@ class BannerService extends TransactionBaseService {
           tmpBanner.created_at = banner.created_at;
           tmpBanner.deleted_at = banner.deleted_at;
           tmpBanner.id = banner.id;
-          tmpBanner.imageId = banner.imageId;
+          tmpBanner.thumbnail = banner.thumbnail;
           tmpBanner.link = banner.link;
           tmpBanner.productId = banner.productId;
           tmpBanner.rank = banner.rank;
@@ -240,21 +224,13 @@ class BannerService extends TransactionBaseService {
                 let product = await productRepo.findOne(query);
               tmpBanner.product = product ? product : {}
           }
-
-          if(banner.imageId) {
-              const query = buildQuery({
-                  id: banner.imageId,
-                })
-                let image = await imageRepo.findOne(query);
-              tmpBanner.image = image ? image : {}
-              tmpBanner.imageUrl = image ? image.url : undefined;
-          }
+          tmpBanner.thumbnail = banner.thumbnail
     
         return tmpBanner
       }
 
       async create(
-        data: Pick<Banner, "type" | "rank" | 'categoryId' | 'imageId' | 'link' | 'productId'>
+        data: Pick<Banner, "type" | "rank" | 'categoryId' | 'thumbnail' | 'link' | 'productId'>
       ): Promise<ExtendedBanner> {
         return this.atomicPhase_(async (manager) => {
             const bannerRepo = this.activeManager_.withRepository(
@@ -331,23 +307,6 @@ class BannerService extends TransactionBaseService {
                 banner.productId = checkProduct.id;
             }
           }
-
-          if(data.imageId) {
-            const imageCheckQuery = buildQuery({
-                id: data.imageId,
-            })
-            let checkImage = await imageRepo.findOne(imageCheckQuery);
-
-            if (!checkImage) {
-                throw new MedusaError(
-                MedusaError.Types.NOT_FOUND,
-                `Image with ID - ${data.imageId} was not found`
-                )
-            }
-            else {
-                banner.imageId = checkImage.id;
-            }
-          }
           
 /////////////////////
           const result = await bannerRepo.save(banner)
@@ -357,7 +316,7 @@ class BannerService extends TransactionBaseService {
           tmpBanner.created_at = result.created_at;
           tmpBanner.deleted_at = result.deleted_at;
           tmpBanner.id = result.id;
-          tmpBanner.imageId = result.imageId;
+          tmpBanner.thumbnail = result.thumbnail;
           tmpBanner.link = result.link;
           tmpBanner.productId = result.productId;
           tmpBanner.rank = result.rank;
@@ -377,16 +336,7 @@ class BannerService extends TransactionBaseService {
                 let product = await productRepo.findOne(query);
               tmpBanner.product = product ? product : {}
           }
-
-          if(result.imageId) {
-              const query = buildQuery({
-                  id: result.imageId,
-                })
-                let image = await imageRepo.findOne(query);
-              tmpBanner.image = image ? image : {}
-              tmpBanner.imageUrl = image ? image.url : undefined;
-          }
-    
+          tmpBanner.thumbnail = banner.thumbnail
             return tmpBanner
         })
       }
@@ -438,20 +388,6 @@ class BannerService extends TransactionBaseService {
                 )
             }
           }
-
-          if(data.imageId) {
-            const imageCheckQuery = buildQuery({
-                id: data.imageId,
-            })
-            let checkImage = await imageRepo.findOne(imageCheckQuery);
-
-            if (!checkImage) {
-                throw new MedusaError(
-                MedusaError.Types.NOT_FOUND,
-                `Image with ID - ${data.imageId} was not found`
-                )
-            }
-          }
           
 /////////////////////
 
@@ -463,7 +399,7 @@ class BannerService extends TransactionBaseService {
           tmpBanner.created_at = result.created_at;
           tmpBanner.deleted_at = result.deleted_at;
           tmpBanner.id = result.id;
-          tmpBanner.imageId = result.imageId;
+          tmpBanner.thumbnail = result.thumbnail;
           tmpBanner.link = result.link;
           tmpBanner.productId = result.productId;
           tmpBanner.rank = result.rank;
@@ -483,15 +419,7 @@ class BannerService extends TransactionBaseService {
                 let product = await productRepo.findOne(query);
               tmpBanner.product = product ? product : {}
           }
-
-          if(result.imageId) {
-              const query = buildQuery({
-                  id: result.imageId,
-                })
-                let image = await imageRepo.findOne(query);
-              tmpBanner.image = image ? image : {}
-              tmpBanner.imageUrl = image ? image.url : undefined;
-          }
+          tmpBanner.thumbnail = banner.thumbnail
     
             return tmpBanner
         })
