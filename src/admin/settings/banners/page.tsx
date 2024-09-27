@@ -66,7 +66,7 @@ const BannersSettingPage = ({
 
     const showPlaceholder = !isLoading && !banner_settings;
 
-    if (isError || !data.banners_settings) {
+    if (isError || !banner_settings) {
       return <BannersSettingsErrorState />;
     }
 

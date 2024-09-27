@@ -9,12 +9,12 @@ import BannerService from "../services/banner"
     container: MedusaContainer,
     config: ConfigModule
   ): Promise<void> => {
-    console.info("Starting loader...")
+    console.info("Starting banners loader...")
     const bannerService = container.resolve<BannerService>(
       "bannerService"
     )
     console.info(`Banners count: ${
       await bannerService.count()
     }`)
-    console.info("Ending loader...")
+    console.info("Ending banners loader...")
   }
