@@ -1,12 +1,10 @@
 import type { SettingConfig, SettingProps } from "@medusajs/admin"
 import {
     Photo,
-    BookOpen,
     Spinner,
     ExclamationCircle,
-    PlusMini,
   } from "@medusajs/icons";
-import { Button, Container, Text, useToggleState } from "@medusajs/ui";
+import { Container, Text } from "@medusajs/ui";
 import {
   useAdminCustomQuery
 } from "medusa-react";

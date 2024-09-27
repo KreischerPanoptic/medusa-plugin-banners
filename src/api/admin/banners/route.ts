@@ -6,14 +6,19 @@ import {
     ProductService,
 } from "@medusajs/medusa"
 import { MedusaError } from "@medusajs/utils"
-import BannerService from "../../../services/banner";
+import BannerService, { ExtendedBanner } from "../../../services/banner";
 import CreateUpdateBannerRequest from "../../../requests/create-update-banner-request";
 import { Banner, BannerType } from "../../../models/banner";
 import BannerSettingsService from "../../../services/banner_settings";
 
+export class ExtendedBannersResponse extends FindPaginationParams {
+    count: number;
+    banners: ExtendedBanner[]
+}
+
 export const GET = async (
     req: MedusaRequest<FindPaginationParams>,
-    res: MedusaResponse
+    res: MedusaResponse<ExtendedBannersResponse>
 ) => {
     const {limit,offset} = req.query;
     const bannersService: BannerService = req.scope.resolve(
@@ -23,8 +28,8 @@ export const GET = async (
     let results = await bannersService.listAndCount({}, {take: parseInt(`${limit || '10'}`), skip: parseInt(`${offset || '0'}`)});
       res.json({
         count: results[1],
-        limit: limit,
-        offset: offset,
+        limit: parseInt(`${limit || '10'}`),
+        offset: parseInt(`${offset || '0'}`),
         banners: results[0]
     })
 }
