@@ -252,7 +252,7 @@ class BannerService extends TransactionBaseService {
               /////////////////
 
           const bannersCount = await this.count()
-          if(bannerSettings.max >= bannersCount) {
+          if(bannerSettings.max <= bannersCount) {
             throw new MedusaError(
                 MedusaError.Types.NOT_ALLOWED,
                 "Max banners count - reached! Creation of new banners - prohibited."

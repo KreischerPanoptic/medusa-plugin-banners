@@ -74,7 +74,7 @@ export const POST = async (
     }
 
     const bannersCount = await bannersService.count()
-    if(settingsResult.max >= bannersCount) {
+    if(settingsResult.max <= bannersCount) {
       throw new MedusaError(
           MedusaError.Types.NOT_ALLOWED,
           "Max banners count - reached! Creation of new banners - prohibited."
