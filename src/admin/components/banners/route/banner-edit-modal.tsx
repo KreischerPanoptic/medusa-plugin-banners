@@ -337,7 +337,7 @@ const BannerEditModal = ({
                   <Label htmlFor="thumbnail" className="text-ui-fg-subtle">
                     Зображення
                   </Label>
-                  {!form.watch("thumbnail") && form.watch('thumbnail').length > 0 && (
+                  {!form.watch("thumbnail") && (
                     <ImagesMediaForm
                       form={nestedForm(form, "media")}
                       type="thumbnail"
