@@ -34,7 +34,7 @@ export const GET = async (
         count: results[1],
         limit: parseInt(`${limit || '10'}`),
         offset: parseInt(`${offset || '0'}`),
-        banners: results[0]
+        banners: results[0].sort(function(a,b) {return a.rank - b.rank})
     })
 }
 
@@ -152,7 +152,7 @@ export const POST = async (
   
     bannerObj.thumbnail = req.body.thumbnail;
     bannerObj.rank = bannersCount;
-  
+    console.log(bannerObj)
     let created = await bannersService.create(bannerObj)
      res.json({ banner: created })
   }

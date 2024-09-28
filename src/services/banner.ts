@@ -258,6 +258,7 @@ class BannerService extends TransactionBaseService {
           banner.type = data.type;
           banner.rank = data.rank;
           banner.link = data.link;
+          banner.thumbnail = data.thumbnail;
 
           const categoryRepo = this.activeManager_.withRepository(
             this.categoryRepository_

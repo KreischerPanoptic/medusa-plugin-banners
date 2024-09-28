@@ -63,13 +63,13 @@ function BannerListItemDetails({
 
   const { mutateAsync: mutateUpAsync, isLoading: isLoadingUp } = useAdminCustomPost
     <any, BannerResponse>(
-      `/banners/up/${item?.id}`,
+      `/banners/reorder/up/${item?.id}`,
       ["banners"]
     )
 
   const { mutateAsync: mutateDownAsync, isLoading: isLoadingDown } = useAdminCustomPost
     <any, BannerResponse>(
-      `/banners/down/${item?.id}`,
+      `/banners/reorder/down/${item?.id}`,
       ["banners"]
     )
 
@@ -134,7 +134,7 @@ function BannerListItemDetails({
                   //Add up button
                   <ArrowDownCircle onClick={() => {sendDown()}}/>
                   :
-                  item.rank >= settings.max ?
+                  item.rank >= settings.max || item.rank === banners?.[banners?.length-1]?.rank ?
                   <ArrowUpCircleSolid onClick={() => {sendUp()}}/>
                   :
                   <div className="flex flex-col gap-y-2">
