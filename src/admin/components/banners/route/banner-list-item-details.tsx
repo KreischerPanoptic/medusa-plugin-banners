@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Tag, PlusMini } from "@medusajs/icons";
+import { ArrowUpCircleSolid, ArrowDownCircle } from "@medusajs/icons";
 import {
   StatusBadge,
   IconButton,
@@ -12,21 +12,25 @@ import { BannerActions } from "./action-menu";
 import BannerEditModal from "./banner-edit-modal";
 import { Notify } from "../../../types/notify";
 import { ExtendedBanner } from "../../../../services/banner";
+import { Product, ProductCategory } from "@medusajs/medusa";
+import { BannerSettings } from "../../../../models/banner_settings";
+import { useAdminCustomPost } from "medusa-react";
+import { BannerResponse } from "../../../../api/admin/banners/reorder/down/[id]/route";
 
 type BannerListItemDetailsProps = {
   banners: ExtendedBanner[];
   item: ExtendedBanner;
-  handler: React.ReactNode;
-  collapseIcon: React.ReactNode;
+  settings: BannerSettings;
   notify: Notify;
+  refresh: () => void
 };
 
 function BannerListItemDetails({
   banners,
   item,
-  handler,
-  collapseIcon,
+  settings,
   notify,
+  refresh
 }: BannerListItemDetailsProps) {
   const [activeBanner, setActiveBanner] = useState<ExtendedBanner>(null);
 
@@ -57,6 +61,52 @@ function BannerListItemDetails({
     hideCreateModal();
   };
 
+  const { mutateAsync: mutateUpAsync, isLoading: isLoadingUp } = useAdminCustomPost
+    <any, BannerResponse>(
+      `/banners/up/${item?.id}`,
+      ["banners"]
+    )
+
+  const { mutateAsync: mutateDownAsync, isLoading: isLoadingDown } = useAdminCustomPost
+    <any, BannerResponse>(
+      `/banners/down/${item?.id}`,
+      ["banners"]
+    )
+
+  const sendDown = async () => {
+    await mutateDownAsync({}, 
+      {
+        onSuccess: async ({banner}) => {
+          notify.success("Успіх", `Банер з ID ${banner.id} понижено у видачі`);
+          refresh();
+        },
+        onError: () => {
+          notify.error(
+            "Помилка",
+            `Під час редагування позиції банеру виникла помилка`
+          );
+        },
+      }
+    )
+  }
+
+  const sendUp = async () => {
+    await mutateUpAsync({}, 
+      {
+        onSuccess: async ({banner}) => {
+          notify.success("Успіх", `Банер з ID ${banner.id} підвищено у видачі`);
+          refresh();
+        },
+        onError: () => {
+          notify.error(
+            "Помилка",
+            `Під час редагування позиції банеру виникла помилка`
+          );
+        },
+      }
+    )
+  }
+
   return (
     <>
       <BannerEditModal
@@ -79,7 +129,19 @@ function BannerListItemDetails({
           <div className="flex w-full items-center justify-between">
             <div className="flex w-full items-center">
               <div className="absolute flex w-5 items-center justify-center">
-                <Tag color="#a1a1aa" />
+                {
+                  item.rank <= 0 ?
+                  //Add up button
+                  <ArrowDownCircle onClick={() => {sendDown()}}/>
+                  :
+                  item.rank >= settings.max ?
+                  <ArrowUpCircleSolid onClick={() => {sendUp()}}/>
+                  :
+                  <div className="flex flex-col gap-y-2">
+                    <ArrowUpCircleSolid onClick={() => {sendUp()}}/>
+                    <ArrowDownCircle onClick={() => {sendDown()}}/>
+                  </div>
+                }
               </div>
               <div
                 className=" ml-8 flex items-center cursor-pointer w-full gap-x-2"
@@ -99,7 +161,7 @@ function BannerListItemDetails({
                     </div>
                   )}
                   <div className="select-none italic text-xs text-ui-fg-muted min-w-20">
-                    {`(${item.rank})`}
+                    {`(${item.rank+1})`}
                   </div>
                   <div
                     className={clx("select-none text-xs font-medium min-w-16", {
@@ -111,6 +173,16 @@ function BannerListItemDetails({
                   {item.link && (
                     <div className="select-none text-xs text-ui-fg-muted">
                       {item.link}
+                    </div>
+                  )}
+                  {item.product && item.productId && (
+                    <div className="select-none text-xs text-ui-fg-muted">
+                      {(item.product as Product).title}
+                    </div>
+                  )}
+                  {item.category && item.categoryId && (
+                    <div className="select-none text-xs text-ui-fg-muted">
+                      {(item.category as ProductCategory).name}
                     </div>
                   )}
                 </div>

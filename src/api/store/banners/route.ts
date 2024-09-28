@@ -19,6 +19,6 @@ export const GET = async (
         count: results[1],
         limit: limit,
         offset: offset,
-        banners: results[0]
+        banners: results[0].sort(function(a,b) {return a.rank - b.rank})
     })
 }

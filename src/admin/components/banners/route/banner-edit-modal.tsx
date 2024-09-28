@@ -247,9 +247,15 @@ const BannerEditModal = ({
           type: i.nativeFile.type,
         })
     );
+    console.log('web form files: ',nativeFiles)
     const { uploads: uploadedImages } = await uploadFile.mutateAsync(
       nativeFiles
     );
+    console.log('uploaded files: ', uploadedImages)
+
+    console.log('uploadedImages[0]?.url: ', uploadedImages[0]?.url)
+    console.log('data.media.images[0]?.url: ', data.media.images[0]?.url)
+    console.log('data.thumbnail: ', data.thumbnail)
 
     const payload: CreateUpdateBannerRequest = {
       type: data.type,
@@ -261,6 +267,7 @@ const BannerEditModal = ({
       "",
       link: data.link && data.link.length > 0 ? data.link : null,
     };
+    console.log('constructed payload: ', payload)
     // add new one category
     if (createNew) {
       console.log('thumbnail upload: ', uploadedImages[0]?.url ||
@@ -330,7 +337,7 @@ const BannerEditModal = ({
                   <Label htmlFor="thumbnail" className="text-ui-fg-subtle">
                     Зображення
                   </Label>
-                  {!form.watch("thumbnail") && (
+                  {!form.watch("thumbnail") && form.watch('thumbnail').length > 0 && (
                     <ImagesMediaForm
                       form={nestedForm(form, "media")}
                       type="thumbnail"

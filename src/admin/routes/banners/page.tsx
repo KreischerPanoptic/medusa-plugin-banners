@@ -62,6 +62,10 @@ import BannerEditModal from "../../components/banners/route/banner-edit-modal";
       hideCreateModal();
       await queryClient.invalidateQueries(["banners"]);
     };
+
+    const refresh = async () => {
+      await queryClient.invalidateQueries(["banners"]);
+    };
   
     const { data, isLoading, isError } = useAdminCustomQuery
     <any, ExtendedBannersResponse>(
@@ -145,12 +149,14 @@ import BannerEditModal from "../../components/banners/route/banner-edit-modal";
           <div className="flex flex-col justify-between mt-4 h-full w-full">
             {showPlaceholder ? (
               <BannersEmptyState />
-            ) : isLoading ? (
+            ) : isLoading || !banner_settings ? (
               <div className="flex h-max items-center justify-center">
                 <Spinner className="text-ui-fg-subtle animate-spin" />
               </div>
             ) : (
               <BannersList
+                refresh={refresh}
+                settings={banner_settings!}
                 notify={notify}
                 banners={banners!}
               />

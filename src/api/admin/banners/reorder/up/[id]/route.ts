@@ -5,30 +5,17 @@ import type {
 import { MedusaError } from "@medusajs/utils"
 import BannerService from "../../../../../../services/banner"
 import { Banner } from "../../../../../../models/banner";
-import BannerSettingsService from "../../../../../../services/banner_settings";
+import { BannerResponse } from "../../down/[id]/route";
 
 export const GET = async (
     req: MedusaRequest,
-    res: MedusaResponse
+    res: MedusaResponse<BannerResponse>
 ) => {
     const {id} = req.params;
 
     const bannersService: BannerService = req.scope.resolve(
         "bannerService"
      )
-     const bannersSettingsService: BannerSettingsService = req.scope.resolve(
-        "bannerSettingsService"
-     );
-
-     const settingsResult = await bannersSettingsService.retrieve()
-
-    if (!settingsResult) {
-        throw new MedusaError(
-        MedusaError.Types.NOT_FOUND,
-        "Banner settings was not found"
-        )
-    }
-
      const bannerResponse: Banner = await bannersService.retrieve(id)
      if (!bannerResponse) {
         throw new MedusaError(
@@ -36,7 +23,7 @@ export const GET = async (
           `Banner with id: ${id} was not found`
         )
       }
-    if(bannerResponse.rank >= settingsResult.max) {
+    if(bannerResponse.rank <= 0) {
         throw new MedusaError(
             MedusaError.Types.INVALID_DATA,
             `Banner with id: ${id} was already at the lowest position!`
@@ -44,25 +31,25 @@ export const GET = async (
     }
     const allBanners = await bannersService.list();
 
-    let updateToDown: Banner;
+    let updateToUp: Banner;
     for(let banner of allBanners) {
-        if(banner.rank === bannerResponse.rank+1) {
-            updateToDown = banner;
+        if(banner.rank === bannerResponse.rank-1) {
+            updateToUp = banner;
         }
     }
 
-    if(!updateToDown) {
+    if(!updateToUp) {
         throw new MedusaError(
             MedusaError.Types.NOT_FOUND,
-            `Banner to swap down with banner with id - ${id} which goes up - not found`
+            `Banner to swap up with banner with id - ${id} which goes down - not found`
           )
     } 
 
-    updateToDown.rank -= 1;
-    bannerResponse.rank += 1;
+    updateToUp.rank += 1;
+    bannerResponse.rank -= 1;
 
-    const updateToDownResult = await bannersService.update(updateToDown.id, updateToDown);
-    const updateToUpResult = await bannersService.update(bannerResponse.id, bannerResponse);
+    const updateToUpResult = await bannersService.update(updateToUp.id, updateToUp);
+    const updateToDownResult = await bannersService.update(bannerResponse.id, bannerResponse);
     
-    res.json({ banner: updateToUpResult })
+    res.json({ banner: updateToDownResult })
 }

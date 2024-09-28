@@ -18,10 +18,13 @@ import { Notify } from "../../../types/notify";
 // import { flattenCategoryTree } from "./utils/categories-utils";
 import { ExtendedBanner } from "../../../../services/banner";
 import BannerListItemDetails from "./banner-list-item-details";
+import { BannerSettings } from "../../../../models/banner_settings";
 
 type BannersListProps = {
   banners: ExtendedBanner[];
+  settings: BannerSettings;
   notify: Notify;
+  refresh: () => void
 };
 
 /**
@@ -32,7 +35,7 @@ function BannersList(props: BannersListProps) {
   const queryClient = useQueryClient();
   const [isUpdating, enableUpdating, disableUpdating] = useToggleState(false);
   const [isError, enableError, disableError] = useToggleState(false);
-  const { banners, notify } = props;
+  const { banners, notify, settings, refresh } = props;
 
 //   const onItemDrop = useCallback(
 //     async (params: {
@@ -89,9 +92,9 @@ function BannersList(props: BannersListProps) {
         <BannerListItemDetails
           item={item as ExtendedBanner}
           banners={banners}
-          handler={handler}
-          collapseIcon={collapseIcon}
+          settings={settings}
           notify={notify}
+          refresh={refresh}
         />
       )}
       handler={
