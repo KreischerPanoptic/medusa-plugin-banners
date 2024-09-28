@@ -1,9 +1,6 @@
 import { useState } from "react";
-import { ArrowUpCircleSolid, ArrowDownCircle } from "@medusajs/icons";
+import { ArrowUpMini, ArrowDownMini } from "@medusajs/icons";
 import {
-  StatusBadge,
-  IconButton,
-  Tooltip,
   useToggleState,
   clx,
 } from "@medusajs/ui";
@@ -132,14 +129,14 @@ function BannerListItemDetails({
                 {
                   item.rank <= 0 ?
                   //Add up button
-                  <ArrowDownCircle onClick={() => {sendDown()}}/>
+                  <ArrowDownMini onClick={() => {sendDown()}}/>
                   :
                   item.rank >= settings.max || item.rank === banners?.[banners?.length-1]?.rank ?
-                  <ArrowUpCircleSolid onClick={() => {sendUp()}}/>
+                  <ArrowUpMini onClick={() => {sendUp()}}/>
                   :
                   <div className="flex flex-col gap-y-2">
-                    <ArrowUpCircleSolid onClick={() => {sendUp()}}/>
-                    <ArrowDownCircle onClick={() => {sendDown()}}/>
+                    <ArrowUpMini onClick={() => {sendUp()}}/>
+                    <ArrowDownMini onClick={() => {sendDown()}}/>
                   </div>
                 }
               </div>

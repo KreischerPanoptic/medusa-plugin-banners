@@ -7,7 +7,7 @@ import BannerService from "../../../../../../services/banner"
 import { Banner } from "../../../../../../models/banner";
 import { BannerResponse } from "../../down/[id]/route";
 
-export const GET = async (
+export const POST = async (
     req: MedusaRequest,
     res: MedusaResponse<BannerResponse>
 ) => {

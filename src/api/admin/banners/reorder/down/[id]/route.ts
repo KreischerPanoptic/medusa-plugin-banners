@@ -11,7 +11,7 @@ export class BannerResponse {
     banner: Banner
 }
 
-export const GET = async (
+export const POST = async (
     req: MedusaRequest,
     res: MedusaResponse<BannerResponse>
 ) => {
