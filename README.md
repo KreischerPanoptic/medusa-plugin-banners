@@ -65,7 +65,7 @@ Main model of Banner that stored in DB. Includes:
 1. Rank - used for ordering of banners.
 2. Type - used for consistency control and to understand how to display banner in frontend UI.
 3. ProductId - mandatory ID of Medusa Product if selected type is Product. Used for linking to Product on retrieval.
-4. ProductId - mandatory ID of Medusa Product Category if selected type is Product Category. Used for linking to Product Category on retrieval (**WARNING** Don't forget to enable product categories experimental flag if you're on Medusa.js of 1 version).
+4. CategoryId - mandatory ID of Medusa Product Category if selected type is Product Category. Used for linking to Product Category on retrieval (**WARNING** Don't forget to enable product categories experimental flag if you're on Medusa.js of 1 version).
 5. Link - mandatory URL if selected type is Link.
 6. Thumbnail - url of image of banner.
 
