@@ -56,6 +56,12 @@ const plugins = [
 ];
 ```
 
+3\. Run the following command from the root of the project to udpate database with a new table required for storing banners and settings
+
+```
+npx medusa migrations run
+```
+
 ---
 
 ## Banner Models
