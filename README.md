@@ -146,6 +146,6 @@ class ExtendedBanner extends Banner {
 
 ## Homepage
 
-- [Product categories with thumbnail and visits count](https://github.com/KreischerPanoptic/medusa-plugin-top-categories)
+- [Medusa Banners](https://github.com/KreischerPanoptic/medusa-plugin-banners)
 
 ---
