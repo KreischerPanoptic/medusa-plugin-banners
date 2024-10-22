@@ -113,21 +113,21 @@ class ExtendedBanner extends Banner {
 
 ## Screenshots
 
-![Main UI](docs\images\main_ui.png)
+![Main UI](docs/images/main_ui.png)
 
-![Banners Plugin in Settings](docs\images\banners_in_settings.png)
+![Banners Plugin in Settings](docs/images/banners_in_settings.png)
 
-![Banners Plugin Settings](docs\images\banners_settings_max.png)
+![Banners Plugin Settings](docs/images/banners_settings_max.png)
 
-![Main UI Context Menu](docs\images\main_ui_context_menu.png)
+![Main UI Context Menu](docs/images/main_ui_context_menu.png)
 
-![Update Category Type](docs\images\update_category_type.png)
+![Update Category Type](docs/images/update_category_type.png)
 
-![Update Product Type](docs\images\update_product_type.png)
+![Update Product Type](docs/images/update_product_type.png)
 
-![Update Link Type](docs\images\update_link_type.png)
+![Update Link Type](docs/images/update_link_type.png)
 
-![Update None Type](docs\images\update_none_type.png)
+![Update None Type](docs/images/update_none_type.png)
 
 ---
 
